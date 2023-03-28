@@ -2,15 +2,17 @@ package entities.dao;
 
 import entities.AlienChild;
 import interfaces.IDBOperations;
+import util.LineReplacer;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlienChildDao implements IDBOperations<AlienChild> {
+
+    public String getTxtpath() {
+        return txtpath;
+    }
 
     private final String txtpath;
 
@@ -46,7 +48,7 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
             while ((line = reader.readLine()) != null){
                 alienchildren.add(parseLineToReturnChild(line));
             }
-
+        reader.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -63,6 +65,7 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
             while ((line = reader.readLine()) != null){
                 if (Integer.parseInt(line.split(" ")[0]) == id){
                     AlienChild a = parseLineToReturnChild(line);
+                    reader.close();
                     return a;
 
                 }
@@ -74,6 +77,25 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    @Override
+    public void upsert(int id, AlienChild item) throws IOException{
+        delete(id);
+        PrintWriter writer = new PrintWriter(new FileWriter(txtpath, true));
+        writer.write(item.toFile());
+        writer.close();
+    }
+
+    @Override
+    public void delete(int id) throws IOException {
+        LineReplacer linereplacer = new LineReplacer();
+        try{
+            linereplacer.removeLine(txtpath, id);
+        }
+        catch (IOException e){
+            throw new IOException(e);
+        }
     }
 
 }

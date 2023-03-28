@@ -3,6 +3,9 @@ package repository;
 import entities.AlienSchool;
 import entities.dao.AlienSchoolDao;
 import interfaces.ICRUDCommands;
+import util.LineReplacer;
+
+import java.io.IOException;
 
 public class AlienSchoolCommandsRepository implements ICRUDCommands<AlienSchool> {
     private AlienSchoolDao _context;
@@ -20,17 +23,16 @@ public class AlienSchoolCommandsRepository implements ICRUDCommands<AlienSchool>
 
     @Override
     public AlienSchool getById(int id) {
-        System.out.println("!");
-        return null;
+        return _context.getById(id);
     }
 
     @Override
-    public void upsert(int id, AlienSchool data) {
-        System.out.println("!");
+    public void upsert(int id, AlienSchool alienschool) {
+
     }
 
     @Override
-    public void delete(int id) {
-        System.out.println("!");
+    public void delete(int id) throws IOException {
+        _context.delete(id);
     }
 }

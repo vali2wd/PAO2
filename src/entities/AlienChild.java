@@ -31,4 +31,19 @@ public class AlienChild {
     public String toString() {
         return name + '#' + id;
     }
+
+    public String toFile(){
+        return this.id+" "+
+        this.name+" "+
+        this.yearOfStudy+" "+
+        this.qwerty+" "+
+        this.qwertz+" "+
+        this.qzerty+" "+
+        this.azerty+" "+
+        this.dvorak+" "+
+        this.planetId;
+    }
+    public int getId() {
+        return id;
+    }
 }

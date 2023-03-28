@@ -9,4 +9,8 @@ public interface IDBOperations<T> {
 
     T getById(int id);
 
+    void upsert(int id, T item) throws IOException;
+
+    void delete(int id) throws IOException;
+
 }

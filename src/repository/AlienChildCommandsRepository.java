@@ -3,6 +3,10 @@ package repository;
 import entities.AlienChild;
 import entities.dao.AlienChildDao;
 import interfaces.ICRUDCommands;
+import util.LineReplacer;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AlienChildCommandsRepository implements ICRUDCommands<AlienChild> {
 
@@ -26,13 +30,13 @@ public class AlienChildCommandsRepository implements ICRUDCommands<AlienChild> {
     }
 
     @Override
-    public void upsert(int id, AlienChild data) {
-        System.out.println("!");
+    public void upsert(int id, AlienChild alienchild) throws IOException{
+        _context.upsert(id, alienchild);
     }
 
     @Override
-    public void delete(int id) {
-        System.out.println("!");
+    public void delete(int id) throws IOException {
+        _context.delete(id);
     }
 
 }

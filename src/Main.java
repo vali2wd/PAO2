@@ -7,13 +7,14 @@ import repository.AlienSchoolCommandsRepository;
 import ui.Menu;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class Main {
     static String CHILDTXT = "C:\\University\\PAO\\PROIECT LABORATOR\\Proiect lab 2\\src\\db\\AlienChildDB.txt";
     static String SCHOOLTXT = "C:\\University\\PAO\\PROIECT LABORATOR\\Proiect lab 2\\src\\db\\AlienSchoolDB.txt";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AlienChildDao alienChildDao = null;
         AlienSchoolDao alienSchoolDao = null;
         try {

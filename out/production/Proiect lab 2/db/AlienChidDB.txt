@@ -1,5 +1,0 @@
-112 Zorblax 3 A B A C A 78
-113 Xylara 2 B B C D A 78
-114 Vortok 6 C C A A A 78
-115 Krilax 1 A B A B B 78
-116 Ylaraq 2 D D B C B 79
