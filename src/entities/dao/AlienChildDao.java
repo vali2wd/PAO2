@@ -2,56 +2,49 @@ package entities.dao;
 
 import entities.AlienChild;
 import interfaces.IDBOperations;
-import util.LineReplacer;
+import util.DatabaseManager;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlienChildDao implements IDBOperations<AlienChild> {
 
-    public String getTxtpath() {
-        return txtpath;
+    private Connection conn;
+    public AlienChildDao(String jdbcUrl) throws SQLException {
+        this.conn = DatabaseManager.getConnection(jdbcUrl);
     }
 
-    private final String txtpath;
-
-    public AlienChildDao(String txtpath) throws FileNotFoundException {
-        this.txtpath = txtpath;
-    }
-
-    private AlienChild parseLineToReturnChild(String line){
-        String[] words = line.split(" ");
-
-        int id = Integer.parseInt(words[0]);
-
-        String name = words[1];
-        int yearOfStudy = Integer.parseInt(words[2]);
-        char qwerty = words[3].charAt(0);
-        char qwertz = words[4].charAt(0);
-        char qzerty = words[5].charAt(0);
-        char azerty = words[6].charAt(0);
-        char dvorak = words[7].charAt(0);
-        int planetId = Integer.parseInt(words[8]);
+    private AlienChild parseResultSetToReturnChild(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        int yearOfStudy = rs.getInt("yearOfStudy");
+        char qwerty = rs.getString("qwerty").charAt(0);
+        char qwertz = rs.getString("qwertz").charAt(0);
+        char qzerty = rs.getString("qzerty").charAt(0);
+        char azerty = rs.getString("azerty").charAt(0);
+        char dvorak = rs.getString("dvorak").charAt(0);
+        int planetId = rs.getInt("planetID");
 
         AlienChild child = new AlienChild(id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, planetId);
 
-
-
         return child;
     }
+
     @Override
     public List<AlienChild> fetchAll() {
         List<AlienChild> alienchildren = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(txtpath))){
-            String line;
-            while ((line = reader.readLine()) != null){
-                alienchildren.add(parseLineToReturnChild(line));
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM AlienChildren");
+            while (rs.next()) {
+                AlienChild child = parseResultSetToReturnChild(rs);
+                alienchildren.add(child);
             }
-        reader.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return alienchildren;
@@ -59,21 +52,12 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
 
     @Override
     public AlienChild getById(int id) {
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(txtpath))){
-            String line;
-            while ((line = reader.readLine()) != null){
-                if (Integer.parseInt(line.split(" ")[0]) == id){
-                    AlienChild a = parseLineToReturnChild(line);
-                    reader.close();
-                    return a;
-
-                }
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM AlienChildren WHERE id = " + id);
+            if (rs.next()) {
+                return parseResultSetToReturnChild(rs);
             }
-        }
-        catch (FileNotFoundException e){
-            throw new RuntimeException(e);
-        }catch (IOException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -81,19 +65,57 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
 
     @Override
     public void upsert(int id, AlienChild item) throws IOException{
-        delete(id);
-        PrintWriter writer = new PrintWriter(new FileWriter(txtpath, true));
-        writer.write(item.toFile());
-        writer.close();
+        //insert or update at id
+        // EXPLICATIA se afla in AlienSchoolDao
+        String sqlInsert = "INSERT INTO AlienChildren (id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, planetID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlUpdate = "UPDATE AlienChildren SET name = ?, yearOfStudy = ?, qwerty = ?, qwertz = ?, qzerty = ?, azerty = ?, dvorak = ?, planetID = ? WHERE id = ?";
+        String sqlSelect = "SELECT * FROM AlienChildren WHERE id = ?";
+        try {
+            PreparedStatement psSelect = conn.prepareStatement(sqlSelect);
+            PreparedStatement psInsert = conn.prepareStatement(sqlInsert);
+            PreparedStatement psUpdate = conn.prepareStatement(sqlUpdate);
+            psSelect.setInt(1, id);
+
+            ResultSet rs = psSelect.executeQuery();
+            // daca EXISTA un ITEM CU ID-ul respectiv, atunci facem UPDATE
+            if (rs.next()) {
+                psUpdate.setString(1, item.getName());
+                psUpdate.setInt(2, item.getYearOfStudy());
+                psUpdate.setString(3, String.valueOf(item.getQwerty()));
+                psUpdate.setString(4, String.valueOf(item.getQwertz()));
+                psUpdate.setString(5, String.valueOf(item.getQzerty()));
+                psUpdate.setString(6, String.valueOf(item.getAzerty()));
+                psUpdate.setString(7, String.valueOf(item.getDvorak()));
+                psUpdate.setInt(8, item.getPlanetId());
+                psUpdate.setInt(9, id);
+                psUpdate.executeUpdate();
+            }else {
+                psInsert.setInt(1, id);
+                psInsert.setString(2, item.getName());
+                psInsert.setInt(3, item.getYearOfStudy());
+                psInsert.setString(4, String.valueOf(item.getQwerty()));
+                psInsert.setString(5, String.valueOf(item.getQwertz()));
+                psInsert.setString(6, String.valueOf(item.getQzerty()));
+                psInsert.setString(7, String.valueOf(item.getAzerty()));
+                psInsert.setString(8, String.valueOf(item.getDvorak()));
+                psInsert.setInt(9, item.getPlanetId());
+                psInsert.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public void delete(int id) throws IOException {
-        LineReplacer linereplacer = new LineReplacer();
-        try{
-            linereplacer.removeLine(txtpath, id);
-        }
-        catch (IOException e){
+        String sql = "DELETE FROM AlienChildren WHERE id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
             throw new IOException(e);
         }
     }

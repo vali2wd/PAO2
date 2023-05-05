@@ -3,9 +3,7 @@ package repository;
 import entities.AlienChild;
 import entities.dao.AlienChildDao;
 import interfaces.ICRUDCommands;
-import util.LineReplacer;
 
-import java.io.File;
 import java.io.IOException;
 
 public class AlienChildCommandsRepository implements ICRUDCommands<AlienChild> {

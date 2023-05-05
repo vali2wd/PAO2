@@ -3,7 +3,6 @@ package repository;
 import entities.AlienSchool;
 import entities.dao.AlienSchoolDao;
 import interfaces.ICRUDCommands;
-import util.LineReplacer;
 
 import java.io.IOException;
 
@@ -28,6 +27,7 @@ public class AlienSchoolCommandsRepository implements ICRUDCommands<AlienSchool>
 
     @Override
     public void upsert(int id, AlienSchool alienschool) {
+        _context.upsert(id, alienschool);
 
     }
 

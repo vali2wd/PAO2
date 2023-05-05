@@ -46,4 +46,36 @@ public class AlienChild {
     public int getId() {
         return id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getYearOfStudy() {
+        return yearOfStudy;
+    }
+
+    public char getQwerty() {
+        return qwerty;
+    }
+
+    public char getQwertz() {
+        return qwertz;
+    }
+
+    public char getQzerty() {
+        return qzerty;
+    }
+
+    public char getAzerty() {
+        return azerty;
+    }
+
+    public char getDvorak() {
+        return dvorak;
+    }
+
+    public int getPlanetId() {
+        return planetId;
+    }
 }

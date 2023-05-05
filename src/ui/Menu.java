@@ -1,9 +1,11 @@
 package ui;
 
 import entities.AlienChild;
+import entities.AlienSchool;
 import repository.AlienChildCommandsRepository;
 import repository.AlienSchoolCommandsRepository;
 import util.ChildScanner;
+import util.SchoolScanner;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,15 +61,19 @@ public class Menu {
                 System.out.println("Enter ID:");
                 id = scanner.nextInt();
                 scanner.nextLine(); // consume newline character
-                alienChildCommandsRepository.getById(id);
+                System.out.println(alienSchoolCommandsRepository.getById(id));
                 break;
             case 5:
                 ChildScanner childscanner = new ChildScanner();
                 AlienChild x = childscanner.inputChild();
                 alienChildCommandsRepository.upsert(x.getId(), x);
                 System.out.println("*---------Operation Complete!");
+                break;
             case 6:
-                //TODO
+                SchoolScanner schoolscanner = new SchoolScanner();
+                AlienSchool y = schoolscanner.inputSchool();
+                alienSchoolCommandsRepository.upsert(y.getId(), y);
+                System.out.println("*---------Operation Complete!");
                 break;
 
             case 7:

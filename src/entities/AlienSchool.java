@@ -16,4 +16,12 @@ public class AlienSchool {
     public String toString() {
         return name + '#' + id;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

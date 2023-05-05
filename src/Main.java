@@ -8,19 +8,18 @@ import ui.Menu;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class Main {
-    static String CHILDTXT = "C:\\University\\PAO\\PROIECT LABORATOR\\Proiect lab 2\\src\\db\\AlienChildDB.txt";
-    static String SCHOOLTXT = "C:\\University\\PAO\\PROIECT LABORATOR\\Proiect lab 2\\src\\db\\AlienSchoolDB.txt";
 
     public static void main(String[] args) throws IOException {
         AlienChildDao alienChildDao = null;
         AlienSchoolDao alienSchoolDao = null;
         try {
-            alienSchoolDao = new AlienSchoolDao(SCHOOLTXT);
-            alienChildDao = new AlienChildDao(CHILDTXT);
-        } catch (FileNotFoundException e) {
+            alienSchoolDao = new AlienSchoolDao("jdbc:sqlite:src/db/AlienEducation.db");
+            alienChildDao = new AlienChildDao("jdbc:sqlite:src/db/AlienEducation.db");
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         AlienChildCommandsRepository childRepository = new AlienChildCommandsRepository(alienChildDao);
