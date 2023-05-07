@@ -1,7 +1,7 @@
 
 # Alien School Management
 
-A .txt-based database for alien children studying, implemented in JAVA.
+A SQLite database for alien children studying, implemented in JAVA.
 
 
 
@@ -13,5 +13,5 @@ Repository Pattern
 
 ## TODO
 
-Add Specification Pattern, transfer to JDBC, use more collections
+Add Specification Pattern, use more collections
 
