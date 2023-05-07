@@ -5,3 +5,10 @@ get_all_child,1683451342789
 get_children_in_terminal_year,1683456717170
 upsert_child,1683456875390
 get_all_child,1683456877622
+get_all_child,1683477650513
+get_all_school,1683477651824
+get_children_in_terminal_year,1683477657400
+get_children_in_terminal_year,1683477664139
+get_children_in_terminal_year,1683477725223
+get_child_by_id,1683477731597
+get_children_in_terminal_year,1683477734330

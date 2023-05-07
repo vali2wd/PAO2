@@ -31,9 +31,9 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
         char qzerty = rs.getString("qzerty").charAt(0);
         char azerty = rs.getString("azerty").charAt(0);
         char dvorak = rs.getString("dvorak").charAt(0);
-        int planetId = rs.getInt("planetID");
+        int schoolID = rs.getInt("schoolID");
 
-        AlienChild child = new AlienChild(id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, planetId);
+        AlienChild child = new AlienChild(id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, schoolID);
 
         return child;
     }
@@ -76,8 +76,8 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
     public void upsert(int id, AlienChild item) throws IOException{
         //insert or update at id
         // EXPLICATIA se afla in AlienSchoolDao
-        String sqlInsert = "INSERT INTO AlienChildren (id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, planetID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String sqlUpdate = "UPDATE AlienChildren SET name = ?, yearOfStudy = ?, qwerty = ?, qwertz = ?, qzerty = ?, azerty = ?, dvorak = ?, planetID = ? WHERE id = ?";
+        String sqlInsert = "INSERT INTO AlienChildren (id, name, yearOfStudy, qwerty, qwertz, qzerty, azerty, dvorak, schoolID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlUpdate = "UPDATE AlienChildren SET name = ?, yearOfStudy = ?, qwerty = ?, qwertz = ?, qzerty = ?, azerty = ?, dvorak = ?, schoolID = ? WHERE id = ?";
         String sqlSelect = "SELECT * FROM AlienChildren WHERE id = ?";
         try {
             PreparedStatement psSelect = conn.prepareStatement(sqlSelect);
@@ -95,7 +95,7 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
                 psUpdate.setString(5, String.valueOf(item.getQzerty()));
                 psUpdate.setString(6, String.valueOf(item.getAzerty()));
                 psUpdate.setString(7, String.valueOf(item.getDvorak()));
-                psUpdate.setInt(8, item.getPlanetId());
+                psUpdate.setInt(8, item.getschoolID());
                 psUpdate.setInt(9, id);
                 psUpdate.executeUpdate();
             }else {
@@ -107,7 +107,7 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
                 psInsert.setString(6, String.valueOf(item.getQzerty()));
                 psInsert.setString(7, String.valueOf(item.getAzerty()));
                 psInsert.setString(8, String.valueOf(item.getDvorak()));
-                psInsert.setInt(9, item.getPlanetId());
+                psInsert.setInt(9, item.getschoolID());
                 psInsert.executeUpdate();
             }
 

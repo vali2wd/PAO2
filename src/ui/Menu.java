@@ -146,7 +146,7 @@ public class Menu {
                 }
                 break;
             case 9:
-                System.out.println("9. Get children in terminal year");
+
                 alienChildCommandsRepository.getFinalYear();
                 try{
                     fw.write("get_children_in_terminal_year," + System.currentTimeMillis() + "\n"); fw.close();

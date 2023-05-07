@@ -9,13 +9,13 @@ public class AlienChild {
     char qzerty;
     char azerty;
     char dvorak;
-    int planetId;
+    int schoolID;
 
 
     public AlienChild() {
     }
 
-    public AlienChild(int id, String name, int yearOfStudy, char qwerty, char qwertz, char qzerty, char azerty, char dvorak, int planetId) {
+    public AlienChild(int id, String name, int yearOfStudy, char qwerty, char qwertz, char qzerty, char azerty, char dvorak, int schoolID) {
         this.id = id;
         this.name = name;
         this.yearOfStudy = yearOfStudy;
@@ -24,7 +24,7 @@ public class AlienChild {
         this.qzerty = qzerty;
         this.azerty = azerty;
         this.dvorak = dvorak;
-        this.planetId = planetId;
+        this.schoolID = schoolID;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AlienChild {
         this.qzerty+" "+
         this.azerty+" "+
         this.dvorak+" "+
-        this.planetId;
+        this.schoolID;
     }
     public int getId() {
         return id;
@@ -75,7 +75,7 @@ public class AlienChild {
         return dvorak;
     }
 
-    public int getPlanetId() {
-        return planetId;
+    public int getschoolID() {
+        return schoolID;
     }
 }
