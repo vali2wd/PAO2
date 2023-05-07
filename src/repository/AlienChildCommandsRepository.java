@@ -21,6 +21,9 @@ public class AlienChildCommandsRepository implements ICRUDCommands<AlienChild> {
 
         }
     }
+    public void getFinalYear(){
+        _context.getFinalYear().forEach(p-> System.out.println(p));
+    }
 
     @Override
     public AlienChild getById(int id) {
@@ -36,5 +39,6 @@ public class AlienChildCommandsRepository implements ICRUDCommands<AlienChild> {
     public void delete(int id) throws IOException {
         _context.delete(id);
     }
+
 
 }

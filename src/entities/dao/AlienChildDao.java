@@ -1,7 +1,9 @@
 package entities.dao;
 
 import entities.AlienChild;
+import filters.BetterFilter;
 import interfaces.IDBOperations;
+import specifications.FinalYearSpecification;
 import util.DatabaseManager;
 
 import java.io.*;
@@ -11,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class AlienChildDao implements IDBOperations<AlienChild> {
 
@@ -48,6 +51,12 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
             throw new RuntimeException(e);
         }
         return alienchildren;
+    }
+    public Stream<AlienChild> getFinalYear(){
+        Stream<AlienChild> childrenAsStream = fetchAll().stream();
+        BetterFilter bf = new BetterFilter();
+
+        return bf.filter(childrenAsStream, new FinalYearSpecification());
     }
 
     @Override
@@ -107,6 +116,7 @@ public class AlienChildDao implements IDBOperations<AlienChild> {
         }
 
     }
+
 
     @Override
     public void delete(int id) throws IOException {
